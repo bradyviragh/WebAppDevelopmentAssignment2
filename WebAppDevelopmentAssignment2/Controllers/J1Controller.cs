@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Web.Http;
+using System.Web.Razor.Text;
 
 namespace WebAppDevelopmentAssignment2.Controllers
 {
@@ -11,7 +14,7 @@ namespace WebAppDevelopmentAssignment2.Controllers
     {
         [Route("api/J1/menu/{burger}/{drink}/{side}/{dessert}")]
         [HttpGet]
-        public IEnumerable<string> Menu(int burger, int drink, int side, int dessert)
+        public string Menu(int burger, int drink, int side, int dessert)
         {
             //Burger Menu Variables
             int cheeseBurgerCal = 461;
@@ -47,7 +50,7 @@ namespace WebAppDevelopmentAssignment2.Controllers
 
             //PROGRAMMING LOGIC
             //user selects which burger they want
-            int burgerCal = burgerChoice[burger];
+            int burgerCal = burgerChoice[burger];  //<----
 
             //user selects which drink they want
             int drinkCal = drinkChoice[drink];
@@ -62,9 +65,9 @@ namespace WebAppDevelopmentAssignment2.Controllers
             //How do we find the total calories? Add up calories of each selection 
             int totalCal = burgerCal + drinkCal + sideCal + dessertCal;
 
-           
+
             //Return a message stating the total calorie count
-            return new string[] { "Your total calorie count is " + totalCal };
+            return "Your total calorie count is " + totalCal;
         }
 
         [Route("api/J2/DiceGame/{m}/{n}")]
@@ -106,6 +109,38 @@ namespace WebAppDevelopmentAssignment2.Controllers
             }
 
         }
+
+        // 2017 J3 Problem https://cemc.math.uwaterloo.ca/contests/computing/2017/stage%201/juniorEF.pdf
+        [Route("api/J3/ExactlyElectrical/{x1}/{y1}/{x2}/{y2}/{e}")]
+        [HttpGet]
+        public string ExactlyElectrical(int x1, int y1, int x2, int y2, int e)
+        {
+            int street1 = x1;
+            int avenue1 = y1;
+            int street2 = x2;
+            int avenue2 = y2;
+            int charge = e;
+
+            int streetTravel = street1 - street2;
+            int avenueTravel = (avenue1 - avenue2);
+            int eCharge = (charge - streetTravel - avenueTravel);
+
+            string yes = "Y";
+            string no = "N";
+            
+
+            if (eCharge > 0) {
+                return yes;
+            } else
+            {
+                return no;
+            } /* this should answer part 1 of the question. However theres another dimension to this problem
+                    I understand now that I have to calculate how many different moves the veh can make.
+                    EX: give these 4 numbers, how many different combinations can you make ???
+                    (10, 4) and (11, 4) you can combo with (10,4), (10,5) (10,4) (11, 4) (11, 4) (11, 3) (11, 5) etc
+                    something like that. This was a fun attempt*/
+        }
     }
+    
 }
 
